@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fuel Efficiency Predictor</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      background: #e6ebf1;
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient{
+      background: linear-gradient(90deg,#0072ff,#00c6ff);
+      color:white;
+      padding:30px;
+      border-radius:0 0 20px 20px;
+      box-shadow:0 3px 15px rgba(0,0,0,0.2);
+      margin-bottom:45px;
+    }
+    .card{
+      border:none; 
+      border-radius:20px;
+      padding:25px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.15);
+    }
+    label{
+      font-weight:600;
+    }
+    .btn-custom{
+      background:#0072ff;
+      color:white;
+      font-size:18px;
+      border:none;
+      border-radius:10px;
+      padding:12px;
+    }
+    .btn-custom:hover{
+      background:#085ce0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="gradient text-center">
+  <h1 style="font-weight:700; letter-spacing:1px;">🚗 Fuel Efficiency Prediction</h1>
+  <p style="opacity:.9">Predict performance on E5, E10, and E20 fuel blends</p>
+</div>
+
+<div class="container">
+
+  <div class="card">
+
+    <form method="POST">
+
+      <h4 class="mb-4 text-primary">Vehicle Details</h4>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Vehicle Name</label>
+          
+
+          <select name="vehicle_name" class="form-control form-select">
+            {% for v in vehicle_list %}
+              <option value="{{v}}" {% if selected_vehicle==v %}selected{% endif %}>{{v}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Engine Type</label>
+          <select name="engine_type" class="form-control form-select">
+            {% for e in engine_list %}
+              <option value="{{e}}" {% if selected_engine==e %}selected{% endif %}>{{e}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <h4 class="mb-3 text-primary">Specifications</h4>
+
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+          <label>Engine Capacity (L)</label>
+          <input name="engine_capacity" type="number" step="0.1" class="form-control" value="{{selected_engine_capacity}}">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Number of Cylinders</label>
+          <input name="no_of_cylinders" type="number" class="form-control" value="{{selected_cylinders}}">
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Displacement (cc)</label>
+          <input name="displacement" type="number" class="form-control" value="{{selected_displacement}}">
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label>Acceleration (0–100 km/h sec)</label>
+          <input name="acceleration" type="number" step="0.1" class="form-control" value="{{selected_acceleration}}">
+        </div>
+      </div>
+
+      <button class="btn-custom w-100 mt-2">Predict Fuel Efficiency</button>
+
+    </form>
+
+    {% if prediction %}
+    <hr class="mt-5">
+    <h4 class="mb-3 text-center">🔍 Prediction Result</h4>
+
+    <div class="row text-center">
+      <div class="col-md-4">
+        <h5>E5</h5>
+        <div class="h4 text-success">{{prediction.E5}}</div>
+      </div>
+      <div class="col-md-4">
+        <h5>E10</h5>
+        <div class="h4 text-warning">{{prediction.E10}}</div>
+      </div>
+      <div class="col-md-4">
+        <h5>E20</h5>
+        <div class="h4 text-primary">{{prediction.E20}}</div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+</body>
+</html>
